@@ -14,6 +14,10 @@ const config: Config = {
         slideUp: "slideUp 0.8s forwards",
         slideDown: "slideDown 0.8s forwards",
         slideFromLeft: "slideFromLeft 0.8s forwards",
+        modalIn: "modalIn 0.8s forwards",
+        modalBGIn: "modalBGIn 0.8s forwards",
+        modalOut: "modalOut 0.8s forwards",
+        modalBGOut: "modalBGOut 0.8s forwards",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

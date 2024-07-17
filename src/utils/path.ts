@@ -18,7 +18,12 @@ export const path = {
   manageDetail(batchId: string): string {
     return `/manage/${batchId}`;
   },
-
+  newExam(batchId: string): string {
+    return `/manage/${batchId}/newExam`;
+  },
+  showList(batchId: string, examId: string): string {
+    return `/manage/${batchId}/${examId}`;
+  },
   //>>>>>> /manage <<<<<<
 
   //>>>>>> /approve <<<<<<

@@ -35,3 +35,46 @@
         opacity: 1;
     }
 }
+
+@keyframes modalIn {
+    0%{
+        scale: 1.05;
+        opacity: 0.6;
+    }
+    100%{
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+
+@keyframes modalOut {
+    0%{
+        scale: 1;
+        opacity: 1;
+    }
+    100%{
+        scale: 1.05;
+        opacity: 0;
+    }
+}
+
+@keyframes modalBGIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 0.5;
+    }
+}
+
+@keyframes modalBGOut {
+    0%{
+        opacity: 0.5;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+

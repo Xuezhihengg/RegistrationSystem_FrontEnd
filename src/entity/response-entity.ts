@@ -1,4 +1,4 @@
-import { FetchedBatchItem, FetchedExamDetail } from "@/entity/entity";
+import { FetchedBatchDetail, FetchedExamDetail } from "@/entity/entity";
 
 interface ResponseEntity {
   timestamp: number;
@@ -7,11 +7,11 @@ interface ResponseEntity {
 }
 
 export interface BatchWithPageInfoResponse extends ResponseEntity {
-  data: { batches: FetchedBatchItem[]; totalPages: number };
+  data: { batches: FetchedBatchDetail[]; totalPages: number };
 }
 
 export interface BatchDetailResponse extends ResponseEntity {
-  data: FetchedBatchItem;
+  data: FetchedBatchDetail;
 }
 
 export interface ExamsListResponse extends ResponseEntity {

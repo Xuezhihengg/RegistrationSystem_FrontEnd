@@ -1,12 +1,12 @@
 "use client";
 
-import { FetchedBatchItem, FinalBatchTableItem } from "@/entity/entity";
+import { FetchedBatchDetail, FinalBatchTableItem } from "@/entity/entity";
 import { path } from "@/utils/path";
 import MainBody from "@/components/ui/main-body";
 import { signupTableColumns } from "@/utils/table-columns";
 import BatchTable from "@/components/batch-table";
 import { addStatusToAllBatchList, convertToISO } from "@/utils/utils";
-import { useBatchList } from "@/api/api";
+import { useBatchList } from "@/api/client_api";
 import React from "react";
 
 export default function SignUpPage() {
@@ -22,12 +22,12 @@ export default function SignUpPage() {
   }: {
     isLoading: boolean;
     allBatchResponse:
-      | { batches: FetchedBatchItem[]; totalPages: number }
+      | { batches: FetchedBatchDetail[]; totalPages: number }
       | undefined;
     error: string | undefined;
   } = useBatchList(page);
 
-  const allBatchList: FetchedBatchItem[] = allBatchResponse?.batches;
+  const allBatchList: FetchedBatchDetail[] = allBatchResponse?.batches;
   const pages: number = allBatchResponse?.totalPages;
   const finalBatchList: FinalBatchTableItem[] =
     addStatusToAllBatchList(allBatchList);

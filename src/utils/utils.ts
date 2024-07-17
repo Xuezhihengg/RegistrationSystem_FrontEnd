@@ -1,5 +1,10 @@
 // 将 "YYYY-MM-DD HH:MM:SS" 格式转换为 ISO 8601 格式
-import { FetchedBatchItem, FinalBatchTableItem } from "@/entity/entity";
+import {
+  FetchedBatchDetail,
+  FetchedExamDetail,
+  FinalBatchTableItem,
+  nameListItem,
+} from "@/entity/entity";
 
 export function convertToISO(mysqlDateTime: string): Date {
   const [datePart, timePart]: string[] = mysqlDateTime.split("T");
@@ -18,12 +23,12 @@ export function convertToISO(mysqlDateTime: string): Date {
 }
 
 export function addStatusToAllBatchList(
-  allBatchList: FetchedBatchItem[],
+  allBatchList: FetchedBatchDetail[],
 ): FinalBatchTableItem[] {
   const currentTime: Date = new Date();
   let finalBatchList: FinalBatchTableItem[] = [];
   if (allBatchList) {
-    finalBatchList = allBatchList.map((item: FetchedBatchItem) => {
+    finalBatchList = allBatchList.map((item: FetchedBatchDetail) => {
       const startTime: Date = convertToISO(item.startDate);
       const endTime: Date = convertToISO(item.endDate);
 

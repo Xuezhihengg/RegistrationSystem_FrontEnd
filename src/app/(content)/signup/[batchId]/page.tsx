@@ -3,17 +3,17 @@ import { path } from "@/utils/path";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import MainBody from "@/components/ui/main-body";
-import { FetchedBatchItem, FetchedExamDetail } from "@/entity/entity";
+import { FetchedBatchDetail, FetchedExamDetail } from "@/entity/entity";
 import BatchDetailShow from "@/components/batch-detail-show";
 import ExamDetail from "@/components/exam-detail";
-import { getBatchDetail, getExamsByBatchId } from "@/api/api";
+import { getBatchDetail, getExamsByBatchId } from "@/api/serve_api";
 
 export default async function SignUpDetailPage({
   params,
 }: {
   params: { batchId: string };
 }) {
-  const batchDetail: FetchedBatchItem = await getBatchDetail(params.batchId);
+  const batchDetail: FetchedBatchDetail = await getBatchDetail(params.batchId);
   const examsList: FetchedExamDetail[] = await getExamsByBatchId(
     params.batchId,
   );
@@ -25,7 +25,7 @@ export default async function SignUpDetailPage({
         <div className="text-2xl">考试安排</div>
       </div>
       <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
-        {examsList.map((exam: FetchedExamDetail, index: number) => (
+        {examsList?.map((exam: FetchedExamDetail, index: number) => (
           <Card className="p-2" shadow="sm" key={index}>
             <ExamDetail exam={exam} />
             <CardFooter className=" flex justify-center">

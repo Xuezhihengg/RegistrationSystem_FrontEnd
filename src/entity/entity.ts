@@ -1,4 +1,4 @@
-export interface FetchedBatchItem {
+export interface FetchedBatchDetail {
   batchId: string;
   batchName: string;
   startDate: string;
@@ -7,7 +7,7 @@ export interface FetchedBatchItem {
   attachment: string;
 }
 
-export interface FinalBatchTableItem extends FetchedBatchItem {
+export interface FinalBatchTableItem extends FetchedBatchDetail {
   count: number;
   status: string;
 }
@@ -33,7 +33,7 @@ export interface approveItem {
   operation: string;
 }
 
-export interface listedItem {
+export interface nameListItem {
   personnelName: string;
   personnelId: string;
   duty: string;

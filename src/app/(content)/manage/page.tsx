@@ -3,7 +3,7 @@
 import MainBody from "@/components/ui/main-body";
 import { manageTableColumns } from "@/utils/table-columns";
 import React, { useEffect, useState } from "react";
-import { FetchedBatchItem, FinalBatchTableItem } from "@/entity/entity";
+import { FetchedBatchDetail, FinalBatchTableItem } from "@/entity/entity";
 import { path } from "@/utils/path";
 import BatchTable from "@/components/batch-table";
 import { addStatusToAllBatchList, convertToISO } from "@/utils/utils";
@@ -20,7 +20,7 @@ import {
 } from "@nextui-org/react";
 import { Input } from "@nextui-org/input";
 import { CalendarDateTime } from "@internationalized/date";
-import { useBatchList } from "@/api/api";
+import { useBatchList } from "@/api/client_api";
 
 export default function ManagePage() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
@@ -37,12 +37,12 @@ export default function ManagePage() {
   }: {
     isLoading: boolean;
     allBatchResponse:
-      | { batches: FetchedBatchItem[]; totalPages: number }
+      | { batches: FetchedBatchDetail[]; totalPages: number }
       | undefined;
     error: string | undefined;
   } = useBatchList(page);
 
-  const allBatchList: FetchedBatchItem[] = allBatchResponse?.batches;
+  const allBatchList: FetchedBatchDetail[] = allBatchResponse?.batches;
   const pages: number = allBatchResponse?.totalPages;
 
   const finalBatchList: FinalBatchTableItem[] =
