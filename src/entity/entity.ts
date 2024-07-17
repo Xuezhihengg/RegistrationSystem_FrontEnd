@@ -1,18 +1,27 @@
-export interface FetchedBatchListItem {
+export interface FetchedBatchItem {
   batchId: string;
   batchName: string;
-  startTime: string;
-  endTime: string;
-}
-
-export interface FetchedBatchDetail extends FetchedBatchListItem {
+  startDate: string;
+  endDate: string;
   description: string;
   attachment: string;
 }
 
-export interface FinalBatchTableItem extends FetchedBatchListItem {
+export interface FinalBatchTableItem extends FetchedBatchItem {
   count: number;
   status: string;
+}
+
+export interface FetchedExamDetail {
+  batchId: string;
+  examId: string;
+  examName: string;
+  campus: string;
+  address: string;
+  startTime: string;
+  endTime: string;
+  chiefInvigilator: string;
+  minorInvigilator: string;
 }
 
 export interface approveItem {
@@ -22,4 +31,10 @@ export interface approveItem {
   batchId: string;
   campus: string;
   operation: string;
+}
+
+export interface listedItem {
+  personnelName: string;
+  personnelId: string;
+  duty: string;
 }

@@ -4,11 +4,11 @@ export const signupTableColumns: { key: string; label: string }[] = [
     label: "监考批次",
   },
   {
-    key: "startTime",
+    key: "startDate",
     label: "报名开始时间",
   },
   {
-    key: "endTime",
+    key: "endDate",
     label: "报名结束时间",
   },
   {
@@ -31,11 +31,11 @@ export const manageTableColumns: { key: string; label: string }[] = [
     label: "监考人数",
   },
   {
-    key: "startTime",
+    key: "startDate",
     label: "报名开始时间",
   },
   {
-    key: "endTime",
+    key: "endDate",
     label: "报名结束时间",
   },
   {
@@ -80,5 +80,20 @@ export const approveTableColumns: { key: string; label: string }[] = [
   {
     key: "operation",
     label: "操作",
+  },
+];
+
+export const listedColumns: { key: string; label: string }[] = [
+  {
+    key: "personnelName",
+    label: "姓名",
+  },
+  {
+    key: "personnelId",
+    label: "工号",
+  },
+  {
+    key: "duty",
+    label: "职责",
   },
 ];

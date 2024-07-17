@@ -18,6 +18,7 @@ export const path = {
   manageDetail(batchId: string): string {
     return `/manage/${batchId}`;
   },
+
   //>>>>>> /manage <<<<<<
 
   //>>>>>> /approve <<<<<<

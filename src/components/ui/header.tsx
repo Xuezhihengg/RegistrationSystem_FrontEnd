@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Breadcrumbs, BreadcrumbItem, User } from "@nextui-org/react";
 import { path } from "@/utils/path";
+import avatar from "@/../public/avatar/argentina.png";
 
 export default function Header() {
   const pathname: string = usePathname();
@@ -10,11 +11,12 @@ export default function Header() {
   const personnelDetails = {
     name: "薛志恒",
     role: "教务科主任",
-    avatar: "../../../public/avatar/argentina.png",
+    avatar: avatar,
   };
 
   function getTitle(pathname: string) {
     switch (true) {
+      //>>>>>> /signup <<<<<<
       case pathname.startsWith("/signup"):
         if (pathname === "/signup") {
           return (
@@ -53,6 +55,9 @@ export default function Header() {
           }
         }
         break;
+      //>>>>>> /signup <<<<<<
+
+      //>>>>>> /approve <<<<<<
       case pathname.startsWith("/approve"):
         if (pathname === "/approve") {
           return (
@@ -61,7 +66,48 @@ export default function Header() {
             </Breadcrumbs>
           );
         }
-        return <div></div>;
+        break;
+      //>>>>>> /approve <<<<<<
+
+      //>>>>>> /manage <<<<<<
+      case pathname.startsWith("/manage"):
+        if (pathname === "/manage") {
+          return (
+            <Breadcrumbs>
+              <BreadcrumbItem>监考管理</BreadcrumbItem>
+            </Breadcrumbs>
+          );
+        } else {
+          const segments: string[] = pathname.split("/");
+          if (segments.length === 3) {
+            // 匹配 /signup/* 格式的路径
+            const batchId: string = segments[2];
+            return (
+              <Breadcrumbs>
+                <BreadcrumbItem href={path.manage()}>监考管理</BreadcrumbItem>
+                <BreadcrumbItem href={path.manageDetail(batchId)}>
+                  监考批次详情
+                </BreadcrumbItem>
+              </Breadcrumbs>
+            );
+          } else if (segments.length === 4) {
+            // 匹配 /signup/*/ * 格式的路径
+            const batchId: string = segments[2];
+            const examId: string = segments[3];
+            return (
+              <Breadcrumbs>
+                <BreadcrumbItem href={path.manage()}>监考管理</BreadcrumbItem>
+                <BreadcrumbItem href={path.manageDetail(batchId)}>
+                  监考批次详情
+                </BreadcrumbItem>
+                <BreadcrumbItem href={path.newSignup(batchId, examId)}>
+                  报名名单
+                </BreadcrumbItem>
+              </Breadcrumbs>
+            );
+          }
+        }
+      //>>>>>> /manage <<<<<<
     }
   }
 
@@ -71,7 +117,7 @@ export default function Header() {
         className="justify-start pl-6 h-14 "
         name={personnelDetails.name}
         description={personnelDetails.role}
-        avatarProps={{ src: personnelDetails.avatar }}
+        avatarProps={avatar}
       ></User>
       <div className="mr-6">{getTitle(pathname)}</div>
     </div>

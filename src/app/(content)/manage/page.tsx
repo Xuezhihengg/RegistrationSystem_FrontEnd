@@ -1,68 +1,100 @@
 "use client";
 
 import MainBody from "@/components/ui/main-body";
-import { manageTableColumns } from "@/components/table/table-columns";
+import { manageTableColumns } from "@/utils/table-columns";
 import React, { useEffect, useState } from "react";
-import { signUpList } from "@/app/DUMMY_DATA";
-import { FetchedBatchListItem, FinalBatchTableItem } from "@/entity/entity";
+import { FetchedBatchItem, FinalBatchTableItem } from "@/entity/entity";
 import { path } from "@/utils/path";
-import BatchTable from "@/components/table/batch-table";
-import { convertToISO } from "@/utils/utils";
+import BatchTable from "@/components/batch-table";
+import { addStatusToAllBatchList, convertToISO } from "@/utils/utils";
+import {
+  Button,
+  DateRangePicker,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Textarea,
+  useDisclosure,
+} from "@nextui-org/react";
+import { Input } from "@nextui-org/input";
+import { CalendarDateTime } from "@internationalized/date";
+import { useBatchList } from "@/api/api";
 
 export default function ManagePage() {
-  const [finalSignUpList, setFinalSignUpList] = useState<FinalBatchTableItem[]>(
-    [],
-  );
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
-  //FetchedBatchListItem --> FinialBatchTableItem
-  useEffect(() => {
-    const currentTime: Date = new Date();
-
-    const tempSignUpList: FinalBatchTableItem[] = signUpList.map(
-      (item: FetchedBatchListItem) => {
-        const startTime: Date = convertToISO(item.startTime);
-        const endTime: Date = convertToISO(item.endTime);
-
-        if (currentTime < startTime) {
-          return { ...item, status: "未开始", count: 5 }; //这一页计算需要count
-        } else if (currentTime > endTime) {
-          return { ...item, status: "已结束", count: 4 };
-        } else {
-          return { ...item, status: "进行中", count: 3 };
-        }
-      },
-    );
-    setFinalSignUpList(tempSignUpList);
-  }, []);
-
-  //>>>>>>分页设置<<<<<<
   const [page, setPage]: [
     number,
     (value: ((prevState: number) => number) | number) => void,
   ] = React.useState(1);
 
-  const rowsPerPage: number = 10;
-  const pages: number = Math.ceil(finalSignUpList.length / rowsPerPage);
+  const {
+    allBatchResponse,
+    error,
+    isLoading,
+  }: {
+    isLoading: boolean;
+    allBatchResponse:
+      | { batches: FetchedBatchItem[]; totalPages: number }
+      | undefined;
+    error: string | undefined;
+  } = useBatchList(page);
 
-  const items: FinalBatchTableItem[] = React.useMemo(() => {
-    const start: number = (page - 1) * rowsPerPage;
-    const end: number = start + rowsPerPage;
+  const allBatchList: FetchedBatchItem[] = allBatchResponse?.batches;
+  const pages: number = allBatchResponse?.totalPages;
 
-    return finalSignUpList.slice(start, end);
-  }, [page, finalSignUpList]);
-  //>>>>>>分页设置<<<<<<
-
+  const finalBatchList: FinalBatchTableItem[] =
+    addStatusToAllBatchList(allBatchList);
   return (
-    <MainBody>
-      <BatchTable
-        operation="详情"
-        toPath={path.manageDetail}
-        page={page}
-        pages={pages}
-        setPage={setPage}
-        items={items}
-        columns={manageTableColumns}
-      />
-    </MainBody>
+    <>
+      {/*>>>>>> 创建批次modal <<<<<<*/}
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">创建批次</ModalHeader>
+          <ModalBody>
+            <form className="flex flex-col  gap-2">
+              <Input label="批次名称" name="batch_name" isRequired />
+              <DateRangePicker
+                label="报名时间"
+                hideTimeZone
+                defaultValue={{
+                  start: new CalendarDateTime(2024, 2, 3, 9, 15),
+                  end: new CalendarDateTime(2024, 2, 3, 9, 15),
+                }}
+              />
+              <Textarea label="监考说明" placeholder="请输入监考说明..." />
+            </form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="danger" variant="light" onPress={onClose}>
+              取消
+            </Button>
+            <Button type="submit" color="primary" onPress={onClose}>
+              提交
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <MainBody>
+        <div className="flex items-center justify-between">
+          <div className="mx-1 my-2">
+            <Button className="mr-4" color="primary" onPress={onOpen}>
+              创建批次
+            </Button>
+          </div>
+        </div>
+        <BatchTable
+          operation="详情"
+          toPath={path.manageDetail}
+          page={page}
+          pages={pages}
+          setPage={setPage}
+          items={finalBatchList}
+          columns={manageTableColumns}
+        />
+      </MainBody>
+    </>
   );
 }

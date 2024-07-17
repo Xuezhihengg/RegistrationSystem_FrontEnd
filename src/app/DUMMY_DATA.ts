@@ -1,156 +1,31 @@
-import { approveItem, FetchedBatchListItem } from "@/entity/entity";
-
-export const signUpList: FetchedBatchListItem[] = [
-  {
-    batchId: "1",
-    batchName: "2023年A楼2023监考报名",
-    startTime: "2024-09-12 12:00:00",
-    endTime: "2024-09-22 23:00:00",
-  },
-  {
-    batchId: "2",
-    batchName: "2023年B楼2023监考报名",
-    startTime: "2024-06-12 12:00:00",
-    endTime: "2024-09-22 23:00:00",
-  },
-  {
-    batchId: "3",
-    batchName: "2023年C楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "4",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "5",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "6",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "7",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "8",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "9",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "10",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "11",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "12",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    batchId: "13",
-    batchName: "2023年D楼2023监考报名",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-];
-
-export const signupDetail = {
-  batchId: "13",
-  batchName: "2023年D楼2023监考报名",
-  startTime: "2023-09-12 12:00:00",
-  endTime: "2023-09-22 23:00:00",
-  duration: "2天",
-  description:
-    "监考说明监考说明监考说明监考说明监考说明监考说明监考说明监考说明监考说明",
-  attachment: "",
+import {
+  approveItem,
+  FetchedBatchItem,
+  FetchedExamDetail,
+  listedItem,
+} from "@/entity/entity";
+export const DUMMY_batchDetail: FetchedBatchItem = {
+  batchId: "B001",
+  batchName: "概率论",
+  startDate: "string",
+  endDate: "string",
+  description: "string",
+  attachment: "string",
 };
 
-export const examsList = [
+export const DUMMY_examsList: FetchedExamDetail[] = [
   {
-    examId: 1,
-    examName: "概率论",
-    address: "主A楼303",
-    campus: "兴庆校区",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    examId: 2,
-    examName: "高等数学",
-    address: "主A楼303",
-    campus: "兴庆校区",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    examId: 3,
-    examName: "数字电路",
-    address: "主A楼303",
-    campus: "兴庆校区",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    examId: 4,
-    examName: "数据库系统",
-    address: "主A楼303",
-    campus: "兴庆校区",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    examId: 5,
-    examName: "马克思主义原理",
-    address: "主A楼303",
-    campus: "兴庆校区",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    examId: 6,
-    examName: "习近平概论",
-    address: "主A楼303",
-    campus: "兴庆校区",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
-  },
-  {
-    examId: 7,
-    examName: "大学英语",
-    address: "主A楼303",
-    campus: "兴庆校区",
-    startTime: "2023-09-12 12:00:00",
-    endTime: "2023-09-22 23:00:00",
+    batchId: "string",
+    examId: "string",
+    examName: "string",
+    campus: "string",
+    address: "string",
+    startTime: "string",
+    endTime: "string",
+    chiefInvigilator: "string",
+    minorInvigilator: "string",
   },
 ];
-
 export const approveList: approveItem[] = [
   {
     approveId: "2",
@@ -263,5 +138,18 @@ export const approveList: approveItem[] = [
     batchId: "2",
     campus: "高新校区",
     operation: "审批:14",
+  },
+];
+
+export const listed: listedItem[] = [
+  {
+    personnelName: "陈林涛",
+    personnelId: "10001",
+    duty: "主监考",
+  },
+  {
+    personnelName: "赖应川",
+    personnelId: "10002",
+    duty: "副监考",
   },
 ];

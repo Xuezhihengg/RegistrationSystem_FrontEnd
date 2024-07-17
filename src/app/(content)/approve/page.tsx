@@ -33,7 +33,7 @@ import { approveItem } from "@/entity/entity";
 import {
   approveSubmitColumns,
   approveTableColumns,
-} from "@/components/table/table-columns";
+} from "@/utils/table-columns";
 
 export default function ApprovePage() {
   //>>>>>>state初始化<<<<<<
@@ -179,69 +179,67 @@ export default function ApprovePage() {
         onOpenChange={onOpenInviteChange}
       >
         <ModalContent>
-          <>
-            <ModalHeader className="flex flex-col gap-1">邀约</ModalHeader>
-            <ModalBody>
-              <Card radius="sm" className="bg-blue-300 p-2 mx-3">
-                <div className="flex items-center px-4 gap-4">
-                  <RiErrorWarningFill />
-                  <p className="text-red-950">
-                    通过邀约渠道，不受监考批次时间限制！
-                  </p>
-                </div>
-              </Card>
-              <form className="p-4">
-                <div className="grid grid-cols-3 gap-4 items-center">
-                  <label htmlFor="batchId">监考批次</label>
-                  <Select
-                    className="col-span-2"
-                    name="batchId"
-                    placeholder="请选择监考批次"
-                    isRequired
+          <ModalHeader className="flex flex-col gap-1">邀约</ModalHeader>
+          <ModalBody>
+            <Card radius="sm" className="bg-blue-300 p-2 mx-3">
+              <div className="flex items-center px-4 gap-4">
+                <RiErrorWarningFill />
+                <p className="text-red-950">
+                  通过邀约渠道，不受监考批次时间限制！
+                </p>
+              </div>
+            </Card>
+            <form className="p-4">
+              <div className="grid grid-cols-3 gap-4 items-center">
+                <label htmlFor="batchId">监考批次</label>
+                <Select
+                  className="col-span-2"
+                  name="batchId"
+                  placeholder="请选择监考批次"
+                  isRequired
+                >
+                  <SelectItem key="1">batch_1</SelectItem>
+                  <SelectItem key="2">batch_2</SelectItem>
+                  <SelectItem key="3">batch_3</SelectItem>
+                </Select>
+                <label htmlFor="methods">选择方式</label>
+                <div className="col-span-2 flex justify-around">
+                  <Checkbox
+                    name="self-finish"
+                    isSelected={selfFinish}
+                    onClick={() => setSelfFinish(!selfFinish)}
                   >
-                    <SelectItem key="1">batch_1</SelectItem>
-                    <SelectItem key="2">batch_2</SelectItem>
-                    <SelectItem key="3">batch_3</SelectItem>
-                  </Select>
-                  <label htmlFor="methods">选择方式</label>
-                  <div className="col-span-2 flex justify-around">
-                    <Checkbox
-                      name="self-finish"
-                      isSelected={selfFinish}
-                      onClick={() => setSelfFinish(!selfFinish)}
-                    >
-                      自走流程
-                    </Checkbox>
-                    <Checkbox
-                      name="help-finish"
-                      isSelected={!selfFinish}
-                      onClick={() => setSelfFinish(!selfFinish)}
-                    >
-                      帮助报名
-                    </Checkbox>
-                  </div>
+                    自走流程
+                  </Checkbox>
+                  <Checkbox
+                    name="help-finish"
+                    isSelected={!selfFinish}
+                    onClick={() => setSelfFinish(!selfFinish)}
+                  >
+                    帮助报名
+                  </Checkbox>
                 </div>
-                <Input
-                  className="my-4 w-full"
-                  placeholder="请输入姓名/工号/学号模糊查询"
-                ></Input>
-              </form>
-            </ModalBody>
-            <Divider />
-            <ModalFooter>
-              <Button color="danger" variant="light" onPress={onCloseInvite}>
-                取消
-              </Button>
-              <Button type="submit" color="primary" onPress={onCloseInvite}>
-                提交
-              </Button>
-            </ModalFooter>
-          </>
+              </div>
+              <Input
+                className="my-4 w-full"
+                placeholder="请输入姓名/工号/学号模糊查询"
+              ></Input>
+            </form>
+          </ModalBody>
+          <Divider />
+          <ModalFooter>
+            <Button color="danger" variant="light" onPress={onCloseInvite}>
+              取消
+            </Button>
+            <Button type="submit" color="primary" onPress={onCloseInvite}>
+              提交
+            </Button>
+          </ModalFooter>
         </ModalContent>
-        {/*>>>>>>邀请modal<<<<<<*/}
-
-        {/*>>>>>>审批modal<<<<<<*/}
       </Modal>
+      {/*>>>>>>邀请modal<<<<<<*/}
+
+      {/*>>>>>>审批modal<<<<<<*/}
       <Modal
         isOpen={isOpenApprove}
         onClose={onCloseApprove}

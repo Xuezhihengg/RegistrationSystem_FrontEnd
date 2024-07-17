@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { path } from "@/utils/path";
-import { Card } from "@nextui-org/card";
 import SideBarItem from "@/components/ui/side-bar-item";
 
 export default function SideBar() {

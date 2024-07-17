@@ -89,36 +89,34 @@ export default function BatchTable(props: BatchTableProps) {
   //>>>>>>定制化列表单元<<<<<<
 
   return (
-    <MainBody>
-      <Table
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              color="primary"
-              page={props.page}
-              total={props.pages}
-              onChange={(page: number) => props.setPage(page)}
-            />
-          </div>
-        }
-      >
-        <TableHeader columns={props.columns}>
-          {(column: { key: string; label: string }) => (
-            <TableColumn key={column.key}>{column.label}</TableColumn>
-          )}
-        </TableHeader>
-        <TableBody items={props.items}>
-          {(item: FinalBatchTableItem) => (
-            <TableRow key={item.batchId}>
-              {(columnKey: Key) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </MainBody>
+    <Table
+      bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            color="primary"
+            page={props.page}
+            total={props.pages}
+            onChange={(page: number) => props.setPage(page)}
+          />
+        </div>
+      }
+    >
+      <TableHeader columns={props.columns}>
+        {(column: { key: string; label: string }) => (
+          <TableColumn key={column.key}>{column.label}</TableColumn>
+        )}
+      </TableHeader>
+      <TableBody items={props.items}>
+        {(item: FinalBatchTableItem) => (
+          <TableRow key={item.batchId}>
+            {(columnKey: Key) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 }
