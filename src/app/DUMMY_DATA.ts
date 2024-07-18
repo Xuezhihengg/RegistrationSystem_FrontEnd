@@ -1,8 +1,8 @@
 import {
-  approveItem,
+  ApproveItem,
   FetchedBatchDetail,
   FetchedExamDetail,
-  nameListItem,
+  NameListItem,
 } from "@/entity/entity";
 export const DUMMY_batchDetail: FetchedBatchDetail = {
   batchId: "B001",
@@ -26,7 +26,7 @@ export const DUMMY_examsList: FetchedExamDetail[] = [
     minorInvigilator: "string",
   },
 ];
-export const approveList: approveItem[] = [
+export const approveList: ApproveItem[] = [
   {
     approveId: "2",
     personnelName: "陈林涛",
@@ -141,7 +141,7 @@ export const approveList: approveItem[] = [
   },
 ];
 
-export const listed: nameListItem[] = [
+export const listed: NameListItem[] = [
   {
     personnelName: "陈林涛",
     personnelId: "10001",

@@ -24,7 +24,7 @@ export interface FetchedExamDetail {
   minorInvigilator: string;
 }
 
-export interface approveItem {
+export interface ApproveItem {
   approveId: string;
   personnelName: string;
   personnelId: string;
@@ -33,7 +33,7 @@ export interface approveItem {
   operation: string;
 }
 
-export interface nameListItem {
+export interface NameListItem {
   personnelName: string;
   personnelId: string;
   duty: string;

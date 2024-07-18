@@ -12,35 +12,29 @@ import {
   TableRow,
   TableCell,
   useDisclosure,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Checkbox,
   Divider,
   Textarea,
-  Select,
-  SelectItem,
   Button,
-  Card,
-  Input,
 } from "@nextui-org/react";
 import React, { Key, useEffect, useState } from "react";
 import { approveList } from "@/app/DUMMY_DATA";
 import MainBody from "@/components/ui/main-body";
-import { approveItem } from "@/entity/entity";
+import { ApproveItem } from "@/entity/entity";
 import {
   approveSubmitColumns,
   approveTableColumns,
 } from "@/utils/table-columns";
+import Link from "next/link";
+import { path } from "@/utils/path";
+import Modal from "@/components/ui/modal";
 
 export default function ApprovePage() {
   //>>>>>>state初始化<<<<<<
   const [selectedKeys, setSelectedKeys] = React.useState<Set<string> | string>(
     new Set([]),
   );
-  const [chosenItems, setChosenItems] = useState<approveItem[]>([]);
+  const [chosenItems, setChosenItems] = useState<ApproveItem[]>([]);
 
   const [isAgree, setIsAgree] = React.useState<boolean>(true);
   const [selfFinish, setSelfFinish] = React.useState<boolean>(true);
@@ -53,12 +47,6 @@ export default function ApprovePage() {
     onClose: onCloseApprove,
     onOpenChange: onOpenApproveChange,
   } = useDisclosure();
-  const {
-    isOpen: isOpenInvite,
-    onOpen: onOpenInvite,
-    onClose: onCloseInvite,
-    onOpenChange: onOpenInviteChange,
-  } = useDisclosure();
   //>>>>>>modal开闭控制<<<<<<
 
   //>>>>>>主列表分页控制<<<<<<
@@ -69,7 +57,7 @@ export default function ApprovePage() {
   const rowsPerPage: number = 10;
   const pages: number = Math.ceil(approveList.length / rowsPerPage);
 
-  const items: approveItem[] = React.useMemo(() => {
+  const items: ApproveItem[] = React.useMemo(() => {
     const start: number = (page - 1) * rowsPerPage;
     const end: number = start + rowsPerPage;
 
@@ -84,7 +72,7 @@ export default function ApprovePage() {
   ] = React.useState(1);
   const rowsPerPageInside: number = 5;
   const pagesInside: number = Math.ceil(chosenItems.length / rowsPerPageInside);
-  const itemsInside: approveItem[] = React.useMemo(() => {
+  const itemsInside: ApproveItem[] = React.useMemo(() => {
     const start: number = (pageInside - 1) * rowsPerPageInside;
     const end: number = start + rowsPerPageInside;
 
@@ -94,16 +82,16 @@ export default function ApprovePage() {
 
   //>>>>>>状态更新<<<<<<  selectedKeys --> chosenItems
   useEffect(() => {
-    let filteredItems: approveItem[];
+    let filteredItems: ApproveItem[];
     if (selectedKeys instanceof Set) {
-      filteredItems = approveList.filter((item: approveItem) =>
+      filteredItems = approveList.filter((item: ApproveItem) =>
         (selectedKeys as Set<string>).has(item.approveId),
       );
     } else {
       filteredItems = approveList;
     }
-    const changedItems: approveItem[] = filteredItems.map(
-      (item: approveItem) => ({
+    const changedItems: ApproveItem[] = filteredItems.map(
+      (item: ApproveItem) => ({
         ...item,
         operation: `移除:${item.approveId}`,
       }),
@@ -133,8 +121,8 @@ export default function ApprovePage() {
 
   //>>>>>>定制化列表单元<<<<<<
   const renderCell = React.useCallback(
-    (approveItem: approveItem, columnKey: React.Key) => {
-      const cellValue = approveItem[columnKey as keyof approveItem];
+    (approveItem: ApproveItem, columnKey: React.Key) => {
+      const cellValue = approveItem[columnKey as keyof ApproveItem];
 
       switch (columnKey) {
         case "operation":
@@ -172,162 +160,80 @@ export default function ApprovePage() {
 
   return (
     <>
-      {/*>>>>>>邀请modal<<<<<<*/}
-      <Modal
-        isOpen={isOpenInvite}
-        onClose={onCloseInvite}
-        onOpenChange={onOpenInviteChange}
-      >
-        <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">邀约</ModalHeader>
-          <ModalBody>
-            <Card radius="sm" className="bg-blue-300 p-2 mx-3">
-              <div className="flex items-center px-4 gap-4">
-                <RiErrorWarningFill />
-                <p className="text-red-950">
-                  通过邀约渠道，不受监考批次时间限制！
-                </p>
-              </div>
-            </Card>
-            <form className="p-4">
-              <div className="grid grid-cols-3 gap-4 items-center">
-                <label htmlFor="batchId">监考批次</label>
-                <Select
-                  className="col-span-2"
-                  name="batchId"
-                  placeholder="请选择监考批次"
-                  isRequired
-                >
-                  <SelectItem key="1">batch_1</SelectItem>
-                  <SelectItem key="2">batch_2</SelectItem>
-                  <SelectItem key="3">batch_3</SelectItem>
-                </Select>
-                <label htmlFor="methods">选择方式</label>
-                <div className="col-span-2 flex justify-around">
-                  <Checkbox
-                    name="self-finish"
-                    isSelected={selfFinish}
-                    onClick={() => setSelfFinish(!selfFinish)}
-                  >
-                    自走流程
-                  </Checkbox>
-                  <Checkbox
-                    name="help-finish"
-                    isSelected={!selfFinish}
-                    onClick={() => setSelfFinish(!selfFinish)}
-                  >
-                    帮助报名
-                  </Checkbox>
-                </div>
-              </div>
-              <Input
-                className="my-4 w-full"
-                placeholder="请输入姓名/工号/学号模糊查询"
-              ></Input>
-            </form>
-          </ModalBody>
-          <Divider />
-          <ModalFooter>
-            <Button color="danger" variant="light" onPress={onCloseInvite}>
-              取消
-            </Button>
-            <Button type="submit" color="primary" onPress={onCloseInvite}>
-              提交
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {/*>>>>>>邀请modal<<<<<<*/}
-
       {/*>>>>>>审批modal<<<<<<*/}
-      <Modal
-        isOpen={isOpenApprove}
-        onClose={onCloseApprove}
-        onOpenChange={onOpenApproveChange}
-      >
-        <ModalContent>
-          <>
-            <ModalHeader className="flex flex-col gap-1">报名审批</ModalHeader>
-            <ModalBody>
-              {/*>>>>>>审批modal中的Table<<<<<<*/}
-              <Table
-                bottomContent={
-                  <div className="flex w-full justify-center">
-                    <Pagination
-                      isCompact
-                      size="sm"
-                      color="primary"
-                      page={pageInside}
-                      total={pagesInside}
-                      onChange={(pageInside: number) =>
-                        setPageInside(pageInside)
-                      }
-                    />
-                  </div>
-                }
-              >
-                <TableHeader columns={approveSubmitColumns}>
-                  {(column: { key: string; label: string }) => (
-                    <TableColumn key={column.key}>{column.label}</TableColumn>
-                  )}
-                </TableHeader>
-                <TableBody items={itemsInside}>
-                  {(item: approveItem) => (
-                    <TableRow key={item.approveId}>
-                      {(columnKey: Key) => (
-                        <TableCell>{renderCell(item, columnKey)}</TableCell>
-                      )}
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-              {/*>>>>>>审批modal中的Table<<<<<<*/}
-
-              {/*>>>>>>审批modal中的form<<<<<<*/}
-              <form>
-                <div className="flex justify-around">
-                  <Checkbox
-                    name="agree"
-                    isSelected={isAgree}
-                    onClick={() => setIsAgree(!isAgree)}
-                  >
-                    同意
-                  </Checkbox>
-                  <Checkbox
-                    name="disagree"
-                    isSelected={!isAgree}
-                    onClick={() => setIsAgree(!isAgree)}
-                  >
-                    不同意
-                  </Checkbox>
-                </div>
-                {!isAgree && (
-                  <Textarea
-                    name="reason"
-                    label="不同意理由"
-                    placeholder="请输入不同意的理由..."
-                    className="mt-4 mb-2"
-                  />
-                )}
-              </form>
-              {/*>>>>>>审批modal中的form<<<<<<*/}
-            </ModalBody>
-            <Divider />
-            <ModalFooter>
-              {isAgree && (
-                <p className="my-2 mr-6 text-center text-sm text-red-700">
-                  提交后不可撤销，请谨慎操作!
-                </p>
+      <Modal isOpen={isOpenApprove} onClose={onCloseApprove}>
+        <>
+          <div className="flex flex-col gap-1">审批</div>
+          <Table
+            bottomContent={
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  size="sm"
+                  color="primary"
+                  page={pageInside}
+                  total={pagesInside}
+                  onChange={(pageInside: number) => setPageInside(pageInside)}
+                />
+              </div>
+            }
+          >
+            <TableHeader columns={approveSubmitColumns}>
+              {(column: { key: string; label: string }) => (
+                <TableColumn key={column.key}>{column.label}</TableColumn>
               )}
+            </TableHeader>
+            <TableBody items={itemsInside}>
+              {(item: ApproveItem) => (
+                <TableRow key={item.approveId}>
+                  {(columnKey: Key) => (
+                    <TableCell>{renderCell(item, columnKey)}</TableCell>
+                  )}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <form>
+            <div className="flex justify-around">
+              <Checkbox
+                name="agree"
+                isSelected={isAgree}
+                onClick={() => setIsAgree(!isAgree)}
+              >
+                同意
+              </Checkbox>
+              <Checkbox
+                name="disagree"
+                isSelected={!isAgree}
+                onClick={() => setIsAgree(!isAgree)}
+              >
+                不同意
+              </Checkbox>
+            </div>
+            {!isAgree && (
+              <Textarea
+                name="reason"
+                label="不同意理由"
+                placeholder="请输入不同意的理由..."
+                className="mt-4 mb-2"
+              />
+            )}
+          </form>
+          <Divider />
+          <div className="flex justify-between items-center">
+            <p className="my-2 mr-6 text-center text-sm text-red-700">
+              {isAgree && "提交后不可撤销，请谨慎操作!"}
+            </p>
+            <div className="flex gap-2">
               <Button color="danger" variant="light" onPress={onCloseApprove}>
                 取消
               </Button>
               <Button type="submit" color="primary" onPress={onCloseApprove}>
                 提交
               </Button>
-            </ModalFooter>
-          </>
-        </ModalContent>
+            </div>
+          </div>
+        </>
       </Modal>
       {/*>>>>>>审批modal<<<<<<*/}
 
@@ -337,7 +243,12 @@ export default function ApprovePage() {
           <Tab className="py-0" key="待我审批" title="待我审批">
             <div className="flex items-center justify-between">
               <div className="mx-1 my-2">
-                <Button onPress={onOpenInvite} className="mr-4" color="primary">
+                <Button
+                  as={Link}
+                  href={path.invite()}
+                  className="mr-4"
+                  color="primary"
+                >
                   邀约
                 </Button>
                 <Button color="default">数据导出</Button>
@@ -374,7 +285,7 @@ export default function ApprovePage() {
                 )}
               </TableHeader>
               <TableBody items={items}>
-                {(item: approveItem) => (
+                {(item: ApproveItem) => (
                   <TableRow key={item.approveId}>
                     {(columnKey: Key) => (
                       <TableCell>{renderCell(item, columnKey)}</TableCell>

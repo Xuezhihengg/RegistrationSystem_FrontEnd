@@ -11,4 +11,7 @@ export const ReqPath = {
   API_Exams_By_BatchId(batchId: string): string {
     return `${host}/examination/${batchId}`;
   },
+  API_NameList_By_ExamId(examId: string): string {
+    return `${host}/examination/nameList/${examId}`;
+  },
 };

@@ -10,8 +10,10 @@ import {
   TimeInput,
 } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
+import { useRouter } from "next/navigation";
 
 export default function NewExamPage() {
+  const router = useRouter();
   return (
     <MainBody>
       <div className="text-xl font-medium mb-4">新增考试</div>
@@ -52,11 +54,22 @@ export default function NewExamPage() {
           <TimeInput label="结束时间" isRequired />
         </div>
       </form>
+      <Divider className="mt-4" />
       <div className="mt-4 flex justify-end gap-4">
-        <Button color="danger" variant="light" className="w-36">
+        <Button
+          color="danger"
+          variant="light"
+          className="w-36"
+          onPress={router.back}
+        >
           取消
         </Button>
-        <Button type="submit" color="primary" className="w-36">
+        <Button
+          type="submit"
+          color="primary"
+          className="w-36"
+          onPress={router.back}
+        >
           提交
         </Button>
       </div>

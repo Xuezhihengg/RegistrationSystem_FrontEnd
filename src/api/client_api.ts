@@ -1,7 +1,11 @@
 import useSWR from "swr";
-import { BatchWithPageInfoResponse } from "@/entity/response-entity";
+import {
+  BatchDetailResponse,
+  BatchWithPageInfoResponse,
+  ExamsListResponse,
+  NameListResponse,
+} from "@/entity/response-entity";
 import { ReqPath } from "@/api/request_path";
-import { FetchedBatchDetail, FetchedExamDetail } from "@/entity/entity";
 
 //Client_API全局变量
 const fetcher = (url: string) => fetch(url).then((res: Response) => res.json());
@@ -29,7 +33,7 @@ export function useBatchDetail(batchId: string) {
     error,
     isLoading,
   }: {
-    data: FetchedBatchDetail;
+    data: BatchDetailResponse;
     error: string | undefined;
     isLoading: boolean;
   } = useSWR(ReqPath.API_Batch_By_BatchId(batchId), fetcher);
@@ -43,9 +47,23 @@ export function useExamsByBatchId(batchId: string) {
     error,
     isLoading,
   }: {
-    data: FetchedExamDetail[];
+    data: ExamsListResponse;
     error: string | undefined;
     isLoading: boolean;
   } = useSWR(ReqPath.API_Exams_By_BatchId(batchId), fetcher);
   return { exams: data?.data, error, isLoading };
+}
+
+//获取指定考试的监考名单
+export function useNameList(examId: string) {
+  const {
+    data,
+    error,
+    isLoading,
+  }: {
+    data: NameListResponse;
+    error: string | undefined;
+    isLoading: boolean;
+  } = useSWR(ReqPath.API_NameList_By_ExamId(examId), fetcher);
+  return { nameList: data?.data, error, isLoading };
 }

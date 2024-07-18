@@ -21,8 +21,8 @@ export const path = {
   newExam(batchId: string): string {
     return `/manage/${batchId}/newExam`;
   },
-  showList(batchId: string, examId: string): string {
-    return `/manage/${batchId}/${examId}`;
+  showNameList(batchId: string, examId: string): string {
+    return `/manage/${batchId}/nameList/${examId}`;
   },
   //>>>>>> /manage <<<<<<
 
@@ -31,4 +31,10 @@ export const path = {
     return "/approve";
   },
   //>>>>>> /approve <<<<<<
+
+  //>>>>>> /invite <<<<<<
+  invite(): string {
+    return "/invite";
+  },
+  //>>>>>> /invite <<<<<<
 };

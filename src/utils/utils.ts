@@ -3,7 +3,7 @@ import {
   FetchedBatchDetail,
   FetchedExamDetail,
   FinalBatchTableItem,
-  nameListItem,
+  NameListItem,
 } from "@/entity/entity";
 
 export function convertToISO(mysqlDateTime: string): Date {

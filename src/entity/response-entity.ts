@@ -1,4 +1,8 @@
-import { FetchedBatchDetail, FetchedExamDetail } from "@/entity/entity";
+import {
+  FetchedBatchDetail,
+  FetchedExamDetail,
+  NameListItem,
+} from "@/entity/entity";
 
 interface ResponseEntity {
   timestamp: number;
@@ -16,4 +20,8 @@ export interface BatchDetailResponse extends ResponseEntity {
 
 export interface ExamsListResponse extends ResponseEntity {
   data: FetchedExamDetail[];
+}
+
+export interface NameListResponse extends ResponseEntity {
+  data: NameListItem[];
 }
