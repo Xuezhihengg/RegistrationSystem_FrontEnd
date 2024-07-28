@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Key } from "react";
+import React, { Key, Suspense } from "react";
 import { FinalBatchTableItem } from "@/entity/entity";
 import {
   Chip,
@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import MainBody from "@/components/ui/main-body";
+import TableSkeleton from "@/components/ui/table-skeleton";
 
 interface BatchTableProps {
   operation: string;
@@ -24,6 +25,7 @@ interface BatchTableProps {
   setPage: (page: number) => void;
   items: FinalBatchTableItem[];
   columns: { key: string; label: string }[];
+  isLoading: boolean;
 }
 
 export default function BatchTable(props: BatchTableProps) {
@@ -89,34 +91,39 @@ export default function BatchTable(props: BatchTableProps) {
   //>>>>>>定制化列表单元<<<<<<
 
   return (
-    <Table
-      bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination
-            isCompact
-            showControls
-            color="primary"
-            page={props.page}
-            total={props.pages}
-            onChange={(page: number) => props.setPage(page)}
-          />
-        </div>
-      }
-    >
-      <TableHeader columns={props.columns}>
-        {(column: { key: string; label: string }) => (
-          <TableColumn key={column.key}>{column.label}</TableColumn>
-        )}
-      </TableHeader>
-      <TableBody items={props.items}>
-        {(item: FinalBatchTableItem) => (
-          <TableRow key={item.batchId}>
-            {(columnKey: Key) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+    <>
+      {props.isLoading && <TableSkeleton />}
+      {!props.isLoading && (
+        <Table
+          bottomContent={
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                color="primary"
+                page={props.page}
+                total={props.pages}
+                onChange={(page: number) => props.setPage(page)}
+              />
+            </div>
+          }
+        >
+          <TableHeader columns={props.columns}>
+            {(column: { key: string; label: string }) => (
+              <TableColumn key={column.key}>{column.label}</TableColumn>
             )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          </TableHeader>
+          <TableBody items={props.items}>
+            {(item: FinalBatchTableItem) => (
+              <TableRow key={item.batchId}>
+                {(columnKey: Key) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      )}
+    </>
   );
 }

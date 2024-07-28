@@ -41,12 +41,7 @@ export default function ApprovePage() {
   //>>>>>>state初始化<<<<<<
 
   //>>>>>>modal开闭控制<<<<<<
-  const {
-    isOpen: isOpenApprove,
-    onOpen: onOpenApprove,
-    onClose: onCloseApprove,
-    onOpenChange: onOpenApproveChange,
-  } = useDisclosure();
+  const [isOpen, setIsOpen] = React.useState(false);
   //>>>>>>modal开闭控制<<<<<<
 
   //>>>>>>主列表分页控制<<<<<<
@@ -115,7 +110,7 @@ export default function ApprovePage() {
       newSelectedKeys.add(approveId);
       return newSelectedKeys;
     });
-    onOpenApprove();
+    setIsOpen(true);
   };
   //>>>>>>按钮事件处理器<<<<<<
 
@@ -161,7 +156,7 @@ export default function ApprovePage() {
   return (
     <>
       {/*>>>>>>审批modal<<<<<<*/}
-      <Modal isOpen={isOpenApprove} onClose={onCloseApprove}>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <>
           <div className="flex flex-col gap-1">审批</div>
           <Table
@@ -225,10 +220,18 @@ export default function ApprovePage() {
               {isAgree && "提交后不可撤销，请谨慎操作!"}
             </p>
             <div className="flex gap-2">
-              <Button color="danger" variant="light" onPress={onCloseApprove}>
+              <Button
+                color="danger"
+                variant="light"
+                onPress={() => setIsOpen(false)}
+              >
                 取消
               </Button>
-              <Button type="submit" color="primary" onPress={onCloseApprove}>
+              <Button
+                type="submit"
+                color="primary"
+                onPress={() => setIsOpen(false)}
+              >
                 提交
               </Button>
             </div>
@@ -254,7 +257,7 @@ export default function ApprovePage() {
                 <Button color="default">数据导出</Button>
               </div>
               <Button
-                onPress={onOpenApproveChange}
+                onPress={() => setIsOpen(true)}
                 color="primary"
                 className="mr-2"
               >

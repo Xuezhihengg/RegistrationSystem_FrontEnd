@@ -10,7 +10,6 @@ import { RiErrorWarningFill } from "react-icons/ri";
 import Modal from "@/components/ui/modal";
 
 export default function InviteModal() {
-  const [selfFinish, setSelfFinish] = React.useState<boolean>(true);
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const router = useRouter();
   const modalClose = () => {
@@ -39,23 +38,6 @@ export default function InviteModal() {
             <SelectItem key="2">batch_2</SelectItem>
             <SelectItem key="3">batch_3</SelectItem>
           </Select>
-          <label htmlFor="methods">选择方式</label>
-          <div className="col-span-2 flex justify-around">
-            <Checkbox
-              name="self-finish"
-              isSelected={selfFinish}
-              onClick={() => setSelfFinish(!selfFinish)}
-            >
-              自走流程
-            </Checkbox>
-            <Checkbox
-              name="help-finish"
-              isSelected={!selfFinish}
-              onClick={() => setSelfFinish(!selfFinish)}
-            >
-              帮助报名
-            </Checkbox>
-          </div>
         </div>
         <Input
           size="lg"

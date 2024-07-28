@@ -10,7 +10,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function InvitePage() {
-  const [selfFinish, setSelfFinish] = useState<boolean>(true);
   const router = useRouter();
   return (
     <MainBody>
@@ -34,23 +33,6 @@ export default function InvitePage() {
             <SelectItem key="2">batch_2</SelectItem>
             <SelectItem key="3">batch_3</SelectItem>
           </Select>
-          <label htmlFor="methods">选择方式</label>
-          <div className="col-span-2 flex justify-around">
-            <Checkbox
-              name="self-finish"
-              isSelected={selfFinish}
-              onClick={() => setSelfFinish(!selfFinish)}
-            >
-              自走流程
-            </Checkbox>
-            <Checkbox
-              name="help-finish"
-              isSelected={!selfFinish}
-              onClick={() => setSelfFinish(!selfFinish)}
-            >
-              帮助报名
-            </Checkbox>
-          </div>
           <Input
             size="lg"
             className="col-span-3"

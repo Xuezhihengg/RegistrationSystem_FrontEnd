@@ -27,7 +27,7 @@ export default function Header() {
         } else {
           const segments: string[] = pathname.split("/");
           if (segments.length === 3) {
-            // 匹配 /signup/* 格式的路径
+            // 匹配 /signup/[batchId] 格式的路径
             const batchId: string = segments[2];
             return (
               <Breadcrumbs>
@@ -38,7 +38,7 @@ export default function Header() {
               </Breadcrumbs>
             );
           } else if (segments.length === 4) {
-            // 匹配 /signup/*/ * 格式的路径
+            // 匹配 /signup/[batchId]/[examId] 格式的路径
             const batchId: string = segments[2];
             const examId: string = segments[3];
             return (
@@ -62,7 +62,7 @@ export default function Header() {
         if (pathname === "/approve") {
           return (
             <Breadcrumbs>
-              <BreadcrumbItem>报名审批</BreadcrumbItem>
+              <BreadcrumbItem href={path.approve()}>报名审批</BreadcrumbItem>
             </Breadcrumbs>
           );
         }
@@ -80,7 +80,7 @@ export default function Header() {
         } else {
           const segments: string[] = pathname.split("/");
           if (segments.length === 3) {
-            // 匹配 /signup/* 格式的路径
+            // 匹配 /manage/[batchId] 格式的路径
             const batchId: string = segments[2];
             return (
               <Breadcrumbs>
@@ -90,24 +90,49 @@ export default function Header() {
                 </BreadcrumbItem>
               </Breadcrumbs>
             );
-          } else if (segments.length === 4) {
-            // 匹配 /signup/*/ * 格式的路径
+          } else {
             const batchId: string = segments[2];
-            const examId: string = segments[3];
-            return (
-              <Breadcrumbs>
-                <BreadcrumbItem href={path.manage()}>监考管理</BreadcrumbItem>
-                <BreadcrumbItem href={path.manageDetail(batchId)}>
-                  监考批次详情
-                </BreadcrumbItem>
-                <BreadcrumbItem href={path.newSignup(batchId, examId)}>
-                  报名名单
-                </BreadcrumbItem>
-              </Breadcrumbs>
-            );
+            const content: string = segments[3];
+            // 匹配 /manage/[batchId]/nameList/[examId] 格式的路径
+            if (content === "nameList") {
+              const examId: string = segments[4];
+              return (
+                <Breadcrumbs>
+                  <BreadcrumbItem href={path.manage()}>监考管理</BreadcrumbItem>
+                  <BreadcrumbItem href={path.manageDetail(batchId)}>
+                    监考批次详情
+                  </BreadcrumbItem>
+                  <BreadcrumbItem href={path.showNameList(batchId, examId)}>
+                    报名名单
+                  </BreadcrumbItem>
+                </Breadcrumbs>
+              );
+              // 匹配 /manage/[batchId]/newExam 格式的路径
+            } else if (content === "newExam") {
+              return (
+                <Breadcrumbs>
+                  <BreadcrumbItem href={path.manage()}>监考管理</BreadcrumbItem>
+                  <BreadcrumbItem href={path.manageDetail(batchId)}>
+                    监考批次详情
+                  </BreadcrumbItem>
+                  <BreadcrumbItem href={path.newExam(batchId)}>
+                    新增考试
+                  </BreadcrumbItem>
+                </Breadcrumbs>
+              );
+            }
           }
         }
       //>>>>>> /manage <<<<<<
+      case pathname.startsWith("/invite"):
+        if (pathname === "/invite") {
+          return (
+            <Breadcrumbs>
+              <BreadcrumbItem>邀请报名</BreadcrumbItem>
+            </Breadcrumbs>
+          );
+        }
+        break;
     }
   }
 

@@ -15,20 +15,10 @@ export default function SignUpPage() {
     (value: ((prevState: number) => number) | number) => void,
   ] = React.useState(1);
 
-  const {
-    allBatchResponse,
-    error,
-    isLoading,
-  }: {
-    isLoading: boolean;
-    allBatchResponse:
-      | { batches: FetchedBatchDetail[]; totalPages: number }
-      | undefined;
-    error: string | undefined;
-  } = useBatchList(page);
+  const { allBatchResponse, error, isLoading } = useBatchList(page);
 
-  const allBatchList: FetchedBatchDetail[] = allBatchResponse?.batches;
-  const pages: number = allBatchResponse?.totalPages;
+  const allBatchList: FetchedBatchDetail[] = allBatchResponse?.batches || [];
+  const pages: number = allBatchResponse?.totalPages || 1;
   const finalBatchList: FinalBatchTableItem[] =
     addStatusToAllBatchList(allBatchList);
 
@@ -42,6 +32,7 @@ export default function SignUpPage() {
         setPage={setPage}
         items={finalBatchList}
         columns={signupTableColumns}
+        isLoading={isLoading}
       />
     </MainBody>
   );
