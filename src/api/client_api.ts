@@ -10,16 +10,16 @@ import {
 const fetcher = (url: string) => fetch(url).then((res: Response) => res.json());
 
 //分页获取全部Batch
-export function useBatchList(page: number) {
+export function useBatchList(keyword: string, page: number) {
   const { data, error, isLoading, mutate } = useSWR(
-    ReqPath.API_Batch_All(page),
-    () => getBatchList(page),
+    ReqPath.API_Batch_All(keyword, page),
+    () => getBatchList(keyword, page),
     {
       keepPreviousData: true,
     },
   );
   setTimeout(() => {}, 2000);
-  return { allBatchResponse: data, error, isLoading, mutate };
+  return { batchListResponse: data, error, isLoading, mutate };
 }
 
 //获取指定批次的详细信息

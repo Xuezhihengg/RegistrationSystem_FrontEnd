@@ -5,34 +5,66 @@ import { path } from "@/utils/path";
 import MainBody from "@/components/ui/main-body";
 import { signupTableColumns } from "@/utils/table-columns";
 import BatchTable from "@/components/batch-table";
-import { addStatusToAllBatchList, convertToISO } from "@/utils/utils";
+import { addStatusToAllBatchList } from "@/utils/utils";
 import { useBatchList } from "@/api/client_api";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Input } from "@nextui-org/input";
+import { FiSearch } from "react-icons/fi";
+import { Button } from "@nextui-org/button";
 
 export default function SignUpPage() {
   const [page, setPage]: [
     number,
     (value: ((prevState: number) => number) | number) => void,
-  ] = React.useState(1);
+  ] = useState(1);
+  const [tableKeyword, setTableKeyword] = useState<string>("");
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-  const { allBatchResponse, error, isLoading } = useBatchList(page);
+  const {
+    batchListResponse: tableListResponse,
+    error: tableError,
+    isLoading: tableIsLoading,
+  } = useBatchList(tableKeyword == "" ? "no_search" : tableKeyword, page);
 
-  const allBatchList: FetchedBatchDetail[] = allBatchResponse?.batches || [];
-  const pages: number = allBatchResponse?.totalPages || 1;
-  const finalBatchList: FinalBatchTableItem[] =
-    addStatusToAllBatchList(allBatchList);
+  const tableBatchList: FetchedBatchDetail[] = tableListResponse?.batches || [];
+  const pages: number = tableListResponse?.totalPages || 1;
+  const finalTableBatchList: FinalBatchTableItem[] =
+    addStatusToAllBatchList(tableBatchList);
+
+  const doSearch = () => {
+    setTableKeyword(searchKeyword);
+    setPage(1);
+  };
+
+  useEffect(() => {
+    if (searchKeyword == "") {
+      setTableKeyword("");
+    }
+  }, [searchKeyword]);
 
   return (
     <MainBody>
+      <div className="flex justify-end mb-2">
+        <Input
+          isClearable
+          className="w-56"
+          placeholder="搜索..."
+          value={searchKeyword}
+          onValueChange={setSearchKeyword}
+        ></Input>
+        <Button color="primary" className="mx-2" onPress={doSearch}>
+          <FiSearch />
+        </Button>
+      </div>
       <BatchTable
         operation="报名"
         toPath={path.signupDetail}
         page={page}
         pages={pages}
         setPage={setPage}
-        items={finalBatchList}
+        items={finalTableBatchList}
         columns={signupTableColumns}
-        isLoading={isLoading}
+        isLoading={tableIsLoading}
       />
     </MainBody>
   );

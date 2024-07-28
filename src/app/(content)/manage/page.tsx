@@ -7,18 +7,44 @@ import { FetchedBatchDetail, FinalBatchTableItem } from "@/entity/entity";
 import { path } from "@/utils/path";
 import BatchTable from "@/components/batch-table";
 import { addStatusToAllBatchList, convertToISO } from "@/utils/utils";
-import { Button, DateRangePicker, Divider, Textarea } from "@nextui-org/react";
+import {
+  Button,
+  DateRangePicker,
+  DateValue,
+  Divider,
+  RangeValue,
+  Textarea,
+} from "@nextui-org/react";
 import { Input } from "@nextui-org/input";
-import { CalendarDateTime } from "@internationalized/date";
+import {
+  DateFormatter,
+  CalendarDateTime,
+  getLocalTimeZone,
+  today,
+  parseDateTime,
+  toZoned,
+  ZonedDateTime,
+} from "@internationalized/date";
 import { useBatchList } from "@/api/client_api";
 import Modal from "@/components/ui/modal";
-import { useRouter } from "next/navigation";
 import { newBatch } from "@/actions/new_batch";
+import { FiSearch } from "react-icons/fi";
 
 export default function ManagePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [newBatchName, setNewBatchName] = useState<string>("");
+  const [newBatchDescription, setNewBatchDescription] = useState<string>("");
   const [fileName, setFileName] = useState<string>("上传附件");
-  const router = useRouter();
+  const initialStartDate: CalendarDateTime = parseDateTime(
+    new Date(Date.now()).toISOString().split(".")[0],
+  ).add({ hours: 8 });
+  const initialDateRange: RangeValue<DateValue> = {
+    start: initialStartDate,
+    end: initialStartDate.add({ days: 5 }),
+  };
+  const [dateRangeValue, setDateRangeValue] =
+    useState<RangeValue<DateValue>>(initialDateRange);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [page, setPage]: [
@@ -26,15 +52,22 @@ export default function ManagePage() {
     (value: ((prevState: number) => number) | number) => void,
   ] = React.useState(1);
 
-  const { allBatchResponse, error, isLoading, mutate } = useBatchList(page);
+  const [tableKeyword, setTableKeyword] = useState<string>("");
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-  const allBatchList: FetchedBatchDetail[] = allBatchResponse?.batches || [];
-  const pages: number = allBatchResponse?.totalPages || 1;
+  const {
+    batchListResponse: tableListResponse,
+    error: tableError,
+    isLoading: tableIsLoading,
+  } = useBatchList(tableKeyword == "" ? "no_search" : tableKeyword, page);
+
+  const tableBatchList: FetchedBatchDetail[] = tableListResponse?.batches || [];
+  const pages: number = tableListResponse?.totalPages || 1;
 
   const finalBatchList: FinalBatchTableItem[] =
-    addStatusToAllBatchList(allBatchList);
+    addStatusToAllBatchList(tableBatchList);
 
-  const handleButtonClick = () => {
+  const handleUploadButtonClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -53,8 +86,22 @@ export default function ManagePage() {
     setIsOpen(false);
     setTimeout(() => {
       setFileName("上传附件");
+      setNewBatchName("");
+      setNewBatchDescription("");
+      setDateRangeValue(initialDateRange);
     }, 500);
   };
+
+  const doSearch = () => {
+    setTableKeyword(searchKeyword);
+    setPage(1);
+  };
+
+  useEffect(() => {
+    if (searchKeyword == "") {
+      setTableKeyword("");
+    }
+  }, [searchKeyword]);
 
   return (
     <>
@@ -62,18 +109,28 @@ export default function ManagePage() {
       <Modal isOpen={isOpen} onClose={closeModal}>
         <div className="text-xl font-medium mb-4">创建批次</div>
         <form action={newBatch} className="flex flex-col  gap-2">
-          <Input label="批次名称" name="batch_name" isRequired />
+          <Input
+            label="批次名称"
+            value={newBatchName}
+            onValueChange={setNewBatchName}
+            isRequired
+            name="batch_name"
+          />
           <DateRangePicker
             label="报名时间"
+            value={dateRangeValue}
+            onChange={setDateRangeValue}
+            hourCycle={24}
+            isRequired
             hideTimeZone
-            defaultValue={{
-              start: new CalendarDateTime(2024, 2, 3, 9, 15),
-              end: new CalendarDateTime(2024, 2, 3, 9, 15),
-            }}
+            minValue={today(getLocalTimeZone())}
+            granularity="minute"
           />
           <Textarea
-            name="description"
             label="监考说明"
+            value={newBatchDescription}
+            onValueChange={setNewBatchDescription}
+            name="description"
             placeholder="请输入监考说明..."
           />
           <Input
@@ -87,7 +144,7 @@ export default function ManagePage() {
             type="button"
             size="lg"
             className="bg-default-100 text-default-500"
-            onPress={handleButtonClick}
+            onPress={handleUploadButtonClick}
           >
             {fileName}
           </Button>
@@ -107,7 +164,7 @@ export default function ManagePage() {
       </Modal>
       <MainBody>
         <div className="flex items-center justify-between">
-          <div className="mx-1 my-2">
+          <div className="mx-1 mb-2">
             <Button
               className="mr-4"
               color="primary"
@@ -116,6 +173,18 @@ export default function ManagePage() {
               }}
             >
               创建批次
+            </Button>
+          </div>
+          <div className="flex justify-end mb-2">
+            <Input
+              isClearable
+              className="w-56"
+              placeholder="搜索..."
+              value={searchKeyword}
+              onValueChange={setSearchKeyword}
+            ></Input>
+            <Button color="primary" className="mx-2" onPress={doSearch}>
+              <FiSearch />
             </Button>
           </div>
         </div>
@@ -127,7 +196,7 @@ export default function ManagePage() {
           setPage={setPage}
           items={finalBatchList}
           columns={manageTableColumns}
-          isLoading={isLoading}
+          isLoading={tableIsLoading}
         />
       </MainBody>
     </>

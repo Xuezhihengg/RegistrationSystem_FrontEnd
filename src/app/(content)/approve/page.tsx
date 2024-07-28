@@ -1,6 +1,5 @@
 "use client";
 
-import { RiErrorWarningFill } from "react-icons/ri";
 import {
   Tabs,
   Tab,
@@ -11,7 +10,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  useDisclosure,
   Checkbox,
   Divider,
   Textarea,
@@ -35,14 +33,9 @@ export default function ApprovePage() {
     new Set([]),
   );
   const [chosenItems, setChosenItems] = useState<ApproveItem[]>([]);
-
   const [isAgree, setIsAgree] = React.useState<boolean>(true);
-  const [selfFinish, setSelfFinish] = React.useState<boolean>(true);
-  //>>>>>>state初始化<<<<<<
-
-  //>>>>>>modal开闭控制<<<<<<
   const [isOpen, setIsOpen] = React.useState(false);
-  //>>>>>>modal开闭控制<<<<<<
+  //>>>>>>state初始化<<<<<<
 
   //>>>>>>主列表分页控制<<<<<<
   const [page, setPage]: [

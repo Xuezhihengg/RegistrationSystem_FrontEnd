@@ -8,9 +8,10 @@ import { ReqPath } from "@/api/request_path";
 
 //分页获取全部Batch
 export async function getBatchList(
+  keyword: string,
   page: number,
 ): Promise<{ batches: FetchedBatchDetail[]; totalPages: number }> {
-  const res: Response = await fetch(ReqPath.API_Batch_All(page));
+  const res: Response = await fetch(ReqPath.API_Batch_All(keyword, page));
   if (!res.ok) {
     throw new Error("获取数据失败");
   }
