@@ -14,7 +14,6 @@ import {
   TableCell,
 } from "@nextui-org/react";
 import Link from "next/link";
-import MainBody from "@/components/ui/main-body";
 import TableSkeleton from "@/components/ui/table-skeleton";
 
 interface BatchTableProps {

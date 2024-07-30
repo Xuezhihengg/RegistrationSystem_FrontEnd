@@ -14,4 +14,7 @@ export const ReqPath = {
   API_NameList_By_ExamId(examId: string): string {
     return `${host}/examination/nameList/${examId}`;
   },
+  API_NewBatch(): string {
+    return `${host}/batch/new`;
+  },
 };

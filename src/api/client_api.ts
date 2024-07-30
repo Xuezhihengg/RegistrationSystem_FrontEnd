@@ -18,7 +18,6 @@ export function useBatchList(keyword: string, page: number) {
       keepPreviousData: true,
     },
   );
-  setTimeout(() => {}, 2000);
   return { batchListResponse: data, error, isLoading, mutate };
 }
 

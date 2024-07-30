@@ -6,7 +6,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FetchedBatchDetail, FinalBatchTableItem } from "@/entity/entity";
 import { path } from "@/utils/path";
 import BatchTable from "@/components/batch-table";
-import { addStatusToAllBatchList, convertToISO } from "@/utils/utils";
+import { addStatusToAllBatchList } from "@/utils/utils";
 import {
   Button,
   DateRangePicker,
@@ -17,18 +17,18 @@ import {
 } from "@nextui-org/react";
 import { Input } from "@nextui-org/input";
 import {
-  DateFormatter,
   CalendarDateTime,
   getLocalTimeZone,
   today,
   parseDateTime,
-  toZoned,
-  ZonedDateTime,
 } from "@internationalized/date";
 import { useBatchList } from "@/api/client_api";
 import Modal from "@/components/ui/modal";
 import { newBatch } from "@/actions/new_batch";
 import { FiSearch } from "react-icons/fi";
+import toast from "react-hot-toast";
+import { useFormState } from "react-dom";
+import { ReqPath } from "@/api/request_path";
 
 export default function ManagePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -55,10 +55,15 @@ export default function ManagePage() {
   const [tableKeyword, setTableKeyword] = useState<string>("");
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
+  const newBatchWithDateRange = newBatch.bind(null, {
+    startDate: dateRangeValue.start.toString(),
+    endDate: dateRangeValue.end.toString(),
+  });
   const {
     batchListResponse: tableListResponse,
     error: tableError,
     isLoading: tableIsLoading,
+    mutate,
   } = useBatchList(tableKeyword == "" ? "no_search" : tableKeyword, page);
 
   const tableBatchList: FetchedBatchDetail[] = tableListResponse?.batches || [];
@@ -75,6 +80,7 @@ export default function ManagePage() {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = event.target.files?.[0];
+    console.log(file);
     if (file) {
       setFileName(file.name);
     } else {
@@ -91,11 +97,22 @@ export default function ManagePage() {
       setDateRangeValue(initialDateRange);
     }, 500);
   };
+  const submitModal = () => {
+    if (newBatchName === "") {
+      return;
+    }
+    closeModal();
+  };
 
   const doSearch = () => {
     setTableKeyword(searchKeyword);
     setPage(1);
   };
+
+  const [state, formAction] = useFormState(newBatchWithDateRange, {
+    message: "",
+    error: false,
+  });
 
   useEffect(() => {
     if (searchKeyword == "") {
@@ -103,18 +120,28 @@ export default function ManagePage() {
     }
   }, [searchKeyword]);
 
+  useEffect(() => {
+    if (state.message == "") return;
+    if (state.error) {
+      toast.error(state.message);
+    } else {
+      toast.success(state.message);
+    }
+  }, [state]);
+
   return (
     <>
       {/*>>>>>> 创建批次modal <<<<<<*/}
       <Modal isOpen={isOpen} onClose={closeModal}>
         <div className="text-xl font-medium mb-4">创建批次</div>
-        <form action={newBatch} className="flex flex-col  gap-2">
+        <form action={formAction} className="flex flex-col  gap-2">
           <Input
             label="批次名称"
             value={newBatchName}
             onValueChange={setNewBatchName}
             isRequired
-            name="batch_name"
+            required
+            name="batchName"
           />
           <DateRangePicker
             label="报名时间"
@@ -138,7 +165,7 @@ export default function ManagePage() {
             type="file"
             ref={fileInputRef}
             className="hidden"
-            onChange={handleFileChange}
+            onInput={handleFileChange}
           />
           <Button
             type="button"
@@ -157,7 +184,7 @@ export default function ManagePage() {
           >
             取消
           </Button>
-          <Button type="submit" color="primary" onPress={closeModal}>
+          <Button type="submit" color="primary" onPress={submitModal}>
             提交
           </Button>
         </form>

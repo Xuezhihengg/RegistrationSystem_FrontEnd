@@ -43,3 +43,14 @@ export function addStatusToAllBatchList(
   }
   return finalBatchList;
 }
+
+export const objectToFormData = (obj: any): FormData => {
+  const formData: FormData = new FormData();
+
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      formData.append(key, obj[key]);
+    }
+  }
+  return formData;
+};

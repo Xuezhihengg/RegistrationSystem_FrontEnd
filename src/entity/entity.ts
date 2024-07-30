@@ -38,3 +38,8 @@ export interface NameListItem {
   personnelId: string;
   duty: string;
 }
+
+export interface DateRange {
+  startDate: string;
+  endDate: string;
+}

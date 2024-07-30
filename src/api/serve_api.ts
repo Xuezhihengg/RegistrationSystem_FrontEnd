@@ -42,3 +42,18 @@ export async function getBatchDetail(
   const res_json: BatchDetailResponse = await res.json();
   return res_json.data;
 }
+
+//创建新批次
+export async function createNewBatch(
+  formDate: FormData,
+): Promise<FetchedBatchDetail> {
+  const res: Response = await fetch(ReqPath.API_NewBatch(), {
+    method: "POST",
+    body: formDate,
+  });
+  if (!res.ok) {
+    throw new Error("创建新批次失败");
+  }
+  const res_json: BatchDetailResponse = await res.json();
+  return res_json.data;
+}
