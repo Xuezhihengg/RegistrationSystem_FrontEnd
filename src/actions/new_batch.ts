@@ -1,18 +1,18 @@
 "use server";
 
-import { DateRange } from "@/entity/entity";
+import { RangeValue, FormState } from "@/entity/entity";
 import { v4 as uuidv4 } from "uuid";
 import { createNewBatch } from "@/api/serve_api";
 
-export async function newBatch(
-  dateRangeValue: DateRange,
-  prevState: { message: string; error: boolean },
+export async function newBatchAction(
+  dateRangeValue: RangeValue,
+  prevState: FormState,
   formData: FormData,
-) {
+): Promise<FormState> {
   const newBatchId: string = uuidv4();
   formData.append("batchId", newBatchId);
-  formData.append("startDate", dateRangeValue.startDate);
-  formData.append("endDate", dateRangeValue.endDate);
+  formData.append("startDate", dateRangeValue.start || "");
+  formData.append("endDate", dateRangeValue.end || "");
   try {
     await createNewBatch(formData);
   } catch (error) {

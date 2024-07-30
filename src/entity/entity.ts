@@ -39,7 +39,12 @@ export interface NameListItem {
   duty: string;
 }
 
-export interface DateRange {
-  startDate: string;
-  endDate: string;
+export interface RangeValue {
+  start: string | undefined;
+  end: string | undefined;
+}
+
+export interface FormState {
+  message: string;
+  error: boolean;
 }

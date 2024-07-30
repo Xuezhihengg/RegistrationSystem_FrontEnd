@@ -17,4 +17,7 @@ export const ReqPath = {
   API_NewBatch(): string {
     return `${host}/batch/new`;
   },
+  API_NewExam(): string {
+    return `${host}/examination/new`;
+  },
 };

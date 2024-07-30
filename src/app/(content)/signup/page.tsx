@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "@nextui-org/input";
 import { FiSearch } from "react-icons/fi";
 import { Button } from "@nextui-org/button";
+import toast from "react-hot-toast";
 
 export default function SignUpPage() {
   const [page, setPage]: [
@@ -41,6 +42,12 @@ export default function SignUpPage() {
       setTableKeyword("");
     }
   }, [searchKeyword]);
+
+  useEffect(() => {
+    if (tableError) {
+      toast.error("获取批次列表失败");
+    }
+  }, [tableError]);
 
   return (
     <MainBody>

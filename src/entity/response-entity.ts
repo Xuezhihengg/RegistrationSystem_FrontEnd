@@ -18,6 +18,10 @@ export interface BatchDetailResponse extends ResponseEntity {
   data: FetchedBatchDetail;
 }
 
+export interface ExamDetailResponse extends ResponseEntity {
+  data: FetchedExamDetail;
+}
+
 export interface ExamsListResponse extends ResponseEntity {
   data: FetchedExamDetail[];
 }

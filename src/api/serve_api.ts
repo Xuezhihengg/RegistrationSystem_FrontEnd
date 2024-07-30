@@ -2,9 +2,12 @@ import { FetchedBatchDetail, FetchedExamDetail } from "@/entity/entity";
 import {
   BatchDetailResponse,
   BatchWithPageInfoResponse,
+  ExamDetailResponse,
   ExamsListResponse,
 } from "@/entity/response-entity";
 import { ReqPath } from "@/api/request_path";
+import * as v from "valibot";
+import { NewExamSchema, NewExamSchemaType } from "@/entity/form-schema";
 
 //分页获取全部Batch
 export async function getBatchList(
@@ -55,5 +58,23 @@ export async function createNewBatch(
     throw new Error("创建新批次失败");
   }
   const res_json: BatchDetailResponse = await res.json();
+  return res_json.data;
+}
+
+//创建新考试
+export async function createNewExam(
+  newExam: NewExamSchemaType,
+): Promise<FetchedExamDetail> {
+  const res: Response = await fetch(ReqPath.API_NewExam(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newExam),
+  });
+  if (!res.ok) {
+    throw new Error("创建新考试失败");
+  }
+  const res_json: ExamDetailResponse = await res.json();
   return res_json.data;
 }

@@ -3,7 +3,11 @@
 import MainBody from "@/components/ui/main-body";
 import { manageTableColumns } from "@/utils/table-columns";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { FetchedBatchDetail, FinalBatchTableItem } from "@/entity/entity";
+import {
+  FetchedBatchDetail,
+  FinalBatchTableItem,
+  FormState,
+} from "@/entity/entity";
 import { path } from "@/utils/path";
 import BatchTable from "@/components/batch-table";
 import { addStatusToAllBatchList } from "@/utils/utils";
@@ -24,26 +28,19 @@ import {
 } from "@internationalized/date";
 import { useBatchList } from "@/api/client_api";
 import Modal from "@/components/ui/modal";
-import { newBatch } from "@/actions/new_batch";
+import { newBatchAction } from "@/actions/new_batch";
 import { FiSearch } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { useFormState } from "react-dom";
-import { ReqPath } from "@/api/request_path";
 
 export default function ManagePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [newBatchName, setNewBatchName] = useState<string>("");
   const [newBatchDescription, setNewBatchDescription] = useState<string>("");
   const [fileName, setFileName] = useState<string>("上传附件");
-  const initialStartDate: CalendarDateTime = parseDateTime(
-    new Date(Date.now()).toISOString().split(".")[0],
-  ).add({ hours: 8 });
-  const initialDateRange: RangeValue<DateValue> = {
-    start: initialStartDate,
-    end: initialStartDate.add({ days: 5 }),
-  };
+
   const [dateRangeValue, setDateRangeValue] =
-    useState<RangeValue<DateValue>>(initialDateRange);
+    useState<RangeValue<DateValue> | null>(null);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -55,9 +52,9 @@ export default function ManagePage() {
   const [tableKeyword, setTableKeyword] = useState<string>("");
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-  const newBatchWithDateRange = newBatch.bind(null, {
-    startDate: dateRangeValue.start.toString(),
-    endDate: dateRangeValue.end.toString(),
+  const newBatchWithDateRange = newBatchAction.bind(null, {
+    start: dateRangeValue?.start.toString(),
+    end: dateRangeValue?.end.toString(),
   });
   const {
     batchListResponse: tableListResponse,
@@ -94,7 +91,7 @@ export default function ManagePage() {
       setFileName("上传附件");
       setNewBatchName("");
       setNewBatchDescription("");
-      setDateRangeValue(initialDateRange);
+      setDateRangeValue(null);
     }, 500);
   };
   const submitModal = () => {
@@ -128,6 +125,12 @@ export default function ManagePage() {
       toast.success(state.message);
     }
   }, [state]);
+
+  useEffect(() => {
+    if (tableError) {
+      toast.error("获取批次列表失败");
+    }
+  }, [tableError]);
 
   return (
     <>
