@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as v from "valibot";
 import { NewExamSchema } from "@/entity/form-schema";
 import { createNewExam } from "@/api/serve_api";
+import { revalidateTag } from "next/cache";
 
 export async function newExamAction(
   bindData: { timeRangeValue: RangeValue; batchId: string },
@@ -35,7 +36,6 @@ export async function newExamAction(
       error: true,
     };
   }
-  console.log(result.output);
   try {
     await createNewExam(result.output);
   } catch (error) {
@@ -45,8 +45,9 @@ export async function newExamAction(
     };
   }
 
+  revalidateTag("examList");
   return {
-    message: "",
+    message: "成功创建新考试",
     error: false,
   };
 }

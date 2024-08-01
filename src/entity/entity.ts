@@ -24,6 +24,29 @@ export interface FetchedExamDetail {
   minorInvigilator: string;
 }
 
+export interface FetchedSignUpDetail {
+  personnelId: string;
+  examId: string;
+  status: number;
+  reason: string;
+  duty: string;
+  isReject: boolean;
+  invitedBy: string;
+}
+
+export interface FetchedPersonnelDetail {
+  personnelId: string;
+  personnelName: string;
+  position: string;
+  unit: string;
+  gender: string;
+  eduBackground: string;
+  identityCard: string;
+  phone: string;
+  photo: string;
+  password: string;
+}
+
 export interface ApproveItem {
   approveId: string;
   personnelName: string;
@@ -34,8 +57,8 @@ export interface ApproveItem {
 }
 
 export interface NameListItem {
-  personnelName: string;
-  personnelId: string;
+  personnelName: string | null;
+  personnelId: string | null;
   duty: string;
 }
 
@@ -47,4 +70,9 @@ export interface RangeValue {
 export interface FormState {
   message: string;
   error: boolean;
+}
+
+export interface AuthInfo {
+  personnelId: string;
+  position: string;
 }

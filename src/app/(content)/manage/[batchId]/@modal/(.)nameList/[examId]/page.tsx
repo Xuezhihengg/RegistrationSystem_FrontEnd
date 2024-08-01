@@ -25,15 +25,7 @@ export default function ShowNameListModal({
 }: {
   params: { examId: string };
 }) {
-  const {
-    nameList,
-    error,
-    isLoading,
-  }: {
-    isLoading: boolean;
-    nameList: NameListItem[] | undefined;
-    error: string | undefined;
-  } = useNameList(params.examId);
+  const { nameList, error, isLoading } = useNameList(params.examId);
 
   const [isOpen, setIsOpen] = React.useState<boolean>(true);
   const router = useRouter();
@@ -58,9 +50,16 @@ export default function ShowNameListModal({
           return cellValue;
         case "personnelId":
           if (cellValue == null) {
-            return "xxxx";
+            return "尚未确认";
           }
           return cellValue;
+        case "duty":
+          if (cellValue == "chief") {
+            return "主监考";
+          } else if (cellValue == "minor") {
+            return "副监考";
+          }
+          break;
         default:
           return cellValue;
       }

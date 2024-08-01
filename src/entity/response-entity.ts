@@ -1,6 +1,9 @@
 import {
+  AuthInfo,
   FetchedBatchDetail,
   FetchedExamDetail,
+  FetchedPersonnelDetail,
+  FetchedSignUpDetail,
   NameListItem,
 } from "@/entity/entity";
 
@@ -10,8 +13,24 @@ interface ResponseEntity {
   message: string;
 }
 
+export interface StringResponse extends ResponseEntity {
+  data: string;
+}
+
 export interface BatchWithPageInfoResponse extends ResponseEntity {
   data: { batches: FetchedBatchDetail[]; totalPages: number };
+}
+
+export interface SignUpListWithPageInfoResponse extends ResponseEntity {
+  data: { signUpList: FetchedSignUpDetail[]; totalPages: number };
+}
+
+export interface SignUpDetailsResponse extends ResponseEntity {
+  data: FetchedSignUpDetail;
+}
+
+export interface SignUpListResponse extends ResponseEntity {
+  data: FetchedSignUpDetail[];
 }
 
 export interface BatchDetailResponse extends ResponseEntity {
@@ -28,4 +47,12 @@ export interface ExamsListResponse extends ResponseEntity {
 
 export interface NameListResponse extends ResponseEntity {
   data: NameListItem[];
+}
+
+export interface PersonnelDetailResponse extends ResponseEntity {
+  data: FetchedPersonnelDetail;
+}
+
+export interface AuthInfoResponse extends ResponseEntity {
+  data: AuthInfo;
 }

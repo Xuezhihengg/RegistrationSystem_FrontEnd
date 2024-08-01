@@ -3,11 +3,7 @@
 import MainBody from "@/components/ui/main-body";
 import { manageTableColumns } from "@/utils/table-columns";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import {
-  FetchedBatchDetail,
-  FinalBatchTableItem,
-  FormState,
-} from "@/entity/entity";
+import { FetchedBatchDetail, FinalBatchTableItem } from "@/entity/entity";
 import { path } from "@/utils/path";
 import BatchTable from "@/components/batch-table";
 import { addStatusToAllBatchList } from "@/utils/utils";
@@ -20,18 +16,14 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { Input } from "@nextui-org/input";
-import {
-  CalendarDateTime,
-  getLocalTimeZone,
-  today,
-  parseDateTime,
-} from "@internationalized/date";
+import { getLocalTimeZone, today } from "@internationalized/date";
 import { useBatchList } from "@/api/client_api";
 import Modal from "@/components/ui/modal";
 import { newBatchAction } from "@/actions/new_batch";
 import { FiSearch } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { useFormState } from "react-dom";
+import { useToast } from "@/utils/hooks";
 
 export default function ManagePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -117,14 +109,7 @@ export default function ManagePage() {
     }
   }, [searchKeyword]);
 
-  useEffect(() => {
-    if (state.message == "") return;
-    if (state.error) {
-      toast.error(state.message);
-    } else {
-      toast.success(state.message);
-    }
-  }, [state]);
+  useToast(state);
 
   useEffect(() => {
     if (tableError) {
@@ -219,7 +204,6 @@ export default function ManagePage() {
           </div>
         </div>
         <BatchTable
-          operation="详情"
           toPath={path.manageDetail}
           page={page}
           pages={pages}

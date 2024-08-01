@@ -18,4 +18,13 @@ export const NewExamSchema = v.object({
   ),
 });
 
-export type NewExamSchemaType = v.InferInput<typeof NewExamSchema>;
+export type NewExamType = v.InferInput<typeof NewExamSchema>;
+
+export const NewSignUpSchema = v.object({
+  personnelId: v.pipe(v.string(), v.nonEmpty()),
+  examId: v.pipe(v.string(), v.nonEmpty(), v.uuid()),
+  duty: v.pipe(v.string(), v.nonEmpty()),
+  invitedBy: v.pipe(v.string(), v.nonEmpty()),
+});
+
+export type NewSignUpType = v.InferInput<typeof NewSignUpSchema>;

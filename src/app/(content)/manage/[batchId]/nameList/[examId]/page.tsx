@@ -52,9 +52,16 @@ export default function ShowNameListPage({
           return cellValue;
         case "personnelId":
           if (cellValue == null) {
-            return "xxxx";
+            return "尚未确认";
           }
           return cellValue;
+        case "duty":
+          if (cellValue == "chief") {
+            return "主监考";
+          } else if (cellValue == "minor") {
+            return "副监考";
+          }
+          break;
         default:
           return cellValue;
       }

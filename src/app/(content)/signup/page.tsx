@@ -64,7 +64,6 @@ export default function SignUpPage() {
         </Button>
       </div>
       <BatchTable
-        operation="报名"
         toPath={path.signupDetail}
         page={page}
         pages={pages}

@@ -123,6 +123,7 @@ export default function Header() {
             }
           }
         }
+        break;
       //>>>>>> /manage <<<<<<
       case pathname.startsWith("/invite"):
         if (pathname === "/invite") {
@@ -133,6 +134,13 @@ export default function Header() {
           );
         }
         break;
+      //>>>>>> /manage <<<<<<
+      case pathname.startsWith("/profile"):
+        return (
+          <Breadcrumbs>
+            <BreadcrumbItem>个人主页</BreadcrumbItem>
+          </Breadcrumbs>
+        );
     }
   }
 

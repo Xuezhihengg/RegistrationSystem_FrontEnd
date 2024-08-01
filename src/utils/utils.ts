@@ -4,6 +4,7 @@ import {
   FetchedExamDetail,
   FinalBatchTableItem,
   NameListItem,
+  RangeValue,
 } from "@/entity/entity";
 
 export function convertToISO(mysqlDateTime: string): Date {
@@ -53,4 +54,51 @@ export const objectToFormData = (obj: any): FormData => {
     }
   }
   return formData;
+};
+
+export const formDataToObject = (formData: FormData): any => {
+  const obj: any = {};
+
+  formData.forEach((value, key) => {
+    if (obj.hasOwnProperty(key)) {
+      if (!Array.isArray(obj[key])) {
+        obj[key] = [obj[key]];
+      }
+      obj[key].push(value);
+    } else {
+      obj[key] = value;
+    }
+  });
+
+  return obj;
+};
+
+export const judgeDateTimeState = (dateTimeRange: RangeValue): string => {
+  const currentTime: string = new Date().toISOString();
+  if (dateTimeRange.start == undefined || dateTimeRange.end == undefined)
+    return "error";
+  if (currentTime < dateTimeRange.start) {
+    return "未开始";
+  } else if (currentTime > dateTimeRange.end) {
+    return "已结束";
+  } else {
+    return "进行中";
+  }
+};
+
+export const findOutDisabledKeys = (
+  nameList: NameListItem[] | undefined,
+): string[] => {
+  if (nameList == undefined) return [];
+  const chiefId: string | null = nameList[0].personnelId;
+  const minorId: string | null = nameList[1].personnelId;
+  if (chiefId == null && minorId == null) {
+    return [];
+  } else if (chiefId == null && minorId != null) {
+    return ["副监考"];
+  } else if (chiefId != null && minorId == null) {
+    return ["主监考"];
+  } else {
+    return ["主监考", "副监考"];
+  }
 };

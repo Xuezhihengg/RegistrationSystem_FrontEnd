@@ -97,3 +97,22 @@ export const listedColumns: { key: string; label: string }[] = [
     label: "职责",
   },
 ];
+
+export const signUpListColumns: { key: string; label: string }[] = [
+  {
+    key: "examName",
+    label: "考试名称",
+  },
+  {
+    key: "batchName",
+    label: "批次名称",
+  },
+  {
+    key: "duty",
+    label: "职责",
+  },
+  {
+    key: "status",
+    label: "状态",
+  },
+];

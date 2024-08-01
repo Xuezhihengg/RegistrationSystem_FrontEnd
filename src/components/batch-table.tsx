@@ -17,7 +17,6 @@ import Link from "next/link";
 import TableSkeleton from "@/components/ui/table-skeleton";
 
 interface BatchTableProps {
-  operation: string;
   toPath: any;
   page: number;
   pages: number;
@@ -78,7 +77,7 @@ export default function BatchTable(props: BatchTableProps) {
               as={Link}
               href={props.toPath(tableItem.batchId)}
             >
-              {props.operation}
+              详情
             </Button>
           );
         default:

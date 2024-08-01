@@ -7,6 +7,8 @@ import { FetchedBatchDetail, FetchedExamDetail } from "@/entity/entity";
 import BatchDetailShow from "@/components/batch-detail-show";
 import ExamDetail from "@/components/exam-detail";
 import { getBatchDetail, getExamsByBatchId } from "@/api/serve_api";
+import { judgeDateTimeState } from "@/utils/utils";
+import toast from "react-hot-toast";
 
 export default async function SignUpDetailPage({
   params,
@@ -17,6 +19,13 @@ export default async function SignUpDetailPage({
   const examsList: FetchedExamDetail[] = await getExamsByBatchId(
     params.batchId,
   );
+
+  const dateTimeState: string = judgeDateTimeState({
+    start: batchDetail.startDate,
+    end: batchDetail.endDate,
+  });
+
+  if (dateTimeState === "error") toast.error("批次细节异常");
 
   return (
     <MainBody>
@@ -32,9 +41,10 @@ export default async function SignUpDetailPage({
               <Button
                 href={path.newSignup(params.batchId, exam.examId)}
                 as={Link}
-                color="primary"
+                color={dateTimeState === "进行中" ? "primary" : "default"}
                 variant="solid"
                 className="w-40"
+                isDisabled={!(dateTimeState === "进行中")}
               >
                 报名
               </Button>

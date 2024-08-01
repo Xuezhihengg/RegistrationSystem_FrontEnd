@@ -14,6 +14,7 @@ export default function SideBar() {
       <SideBarItem href={path.signup()}>监考报名</SideBarItem>
       <SideBarItem href={path.approve()}>报名审批</SideBarItem>
       <SideBarItem href={path.manage()}>监考管理</SideBarItem>
+      <SideBarItem href={path.profile("P009")}>个人主页</SideBarItem>
     </div>
   );
 }

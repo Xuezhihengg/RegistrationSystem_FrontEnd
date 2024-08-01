@@ -37,4 +37,10 @@ export const path = {
     return "/invite";
   },
   //>>>>>> /invite <<<<<<
+
+  //>>>>>> /profile <<<<<<
+  profile(personnelId: string): string {
+    return `/profile/${personnelId}`;
+  },
+  //>>>>>> /profile <<<<<<
 };

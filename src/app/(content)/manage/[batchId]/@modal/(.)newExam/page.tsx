@@ -17,6 +17,7 @@ import { newExamAction } from "@/actions/new_exam";
 import { useFormState } from "react-dom";
 import { TimeValue } from "@react-types/datepicker";
 import toast from "react-hot-toast";
+import { useToast } from "@/utils/hooks";
 
 export default function NewExamModal({
   params,
@@ -71,14 +72,7 @@ export default function NewExamModal({
     error: false,
   });
 
-  useEffect(() => {
-    if (state.message == "") return;
-    if (state.error) {
-      toast.error(state.message);
-    } else {
-      toast.success(state.message);
-    }
-  }, [state]);
+  useToast(state);
 
   return (
     <Modal isOpen={isOpen} onClose={closeModal}>
