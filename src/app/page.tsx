@@ -3,25 +3,27 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
-import { path } from "@/utils/path";
-import Link from "next/link";
-import signInAction from "@/actions/log_in";
-import { cookies } from "next/headers";
-import { useFormState } from "react-dom";
-import { useToast } from "@/utils/hooks";
 import { useState } from "react";
-import { useAuth } from "@/api/client_api";
 import { auth, logIn } from "@/api/serve_api";
 import { AuthInfo } from "@/entity/entity";
 import React, { FormEvent } from "react";
+import toast from "react-hot-toast";
+import { redirect, useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const submitHandler = async (event: FormEvent) => {
     event.preventDefault();
-    const result: AuthInfo = await logIn(username, password);
-    console.log(result);
+    try {
+      const result: AuthInfo = await logIn(username, password);
+      console.log(result);
+    } catch (error) {
+      toast.error("登录失败");
+    }
+    toast.success("登录成功");
+    router.push("signup");
   };
 
   return (

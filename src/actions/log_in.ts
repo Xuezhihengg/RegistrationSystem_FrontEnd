@@ -15,7 +15,6 @@ export default async function signInAction(
       username as string,
       password as string,
     );
-    // cookies().set("SESSION", "Delba");
     console.log(authInfo);
   } catch (error) {
     return {

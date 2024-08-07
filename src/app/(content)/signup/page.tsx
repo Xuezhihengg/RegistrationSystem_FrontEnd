@@ -12,6 +12,7 @@ import { Input } from "@nextui-org/input";
 import { FiSearch } from "react-icons/fi";
 import { Button } from "@nextui-org/button";
 import toast from "react-hot-toast";
+import { cookies } from "next/headers";
 
 export default function SignUpPage() {
   const [page, setPage]: [

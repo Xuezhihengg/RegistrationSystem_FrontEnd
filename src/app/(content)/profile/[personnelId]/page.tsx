@@ -3,6 +3,7 @@ import { getPersonnelDetail } from "@/api/serve_api";
 import { FetchedPersonnelDetail } from "@/entity/entity";
 import ProfileAvatar from "@/components/profile-avatar";
 import SignUpListTable from "@/components/signup-list-table";
+import { cookies } from "next/headers";
 
 export default async function ProfilePage({
   params,
